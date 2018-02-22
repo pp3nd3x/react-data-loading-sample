@@ -1,29 +1,18 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { getPizzaInfo, getPeruInfo, getUserInfo } from './api';
 import App from './App';
 
-const getInfo = () => {
-  const promises = [];
-  promises.push(getUserInfo());
-  promises.push(getUserInfo());
-  promises.push(getUserInfo());
-  promises.push(getUserInfo());
-  return Promise.all(promises);
+const render = () => {
+  return `
+    <div id="root">
+      ${renderToString(<App />)}
+    </div>
+    <script src="client/client.js">
+  `;
 };
 
 const reactApp = async (req, res, next) => {
-  // const peru = await getPeruInfo();
-  // console.log('peru info >>>');
-  const info = await getInfo();
-  // console.log('>>> info loaded', info);
-
-  const html = `
-  <div id="root">
-    ${renderToString(<App initialData={info} />)}
-  </div>
-  <script src="client/client.js">
-`;
+  const html = await render();
 
   res.send(html);
 };

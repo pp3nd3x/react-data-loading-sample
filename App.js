@@ -1,15 +1,18 @@
 import React, { Fragment } from 'react';
 import ContentSection from './Content';
+import DataLoader from './dataLoaderHoC';
 
 export default props => {
   const version = React.version;
-  const initialData = props.initialData || {};
+  // const initialData = getInfo() || {};
+  // const info = await getInfo();
+
   return (
     <Fragment>
       <header style={{ background: 'blue', color: 'white', padding: '20px' }}>
         Some header
       </header>
-      <ContentSection initialData={initialData} version={version} />
+      <DataLoader component={ContentSection} version={version} />
       <footer
         style={{
           background: 'grey',
