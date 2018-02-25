@@ -4,8 +4,8 @@ import reactApp from './reactApp';
 
 const app = express();
 
-app.use('/client', express.static(path.resolve(__dirname, './dist')));
-console.log(path.resolve(__dirname, './dist'));
+app.use('/assets', express.static(path.resolve(__dirname, './dist/assets')));
+console.log(path.resolve(__dirname, './dist/assets'));
 
 app.get('*', reactApp);
 

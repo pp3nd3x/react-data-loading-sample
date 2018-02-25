@@ -2,6 +2,17 @@ import React, { Fragment } from 'react';
 import ContentSection from './Content';
 import DataLoader from './dataLoaderHoC';
 
+import { getUserInfo } from './api';
+
+const getInfo = () => {
+  const promises = [];
+  promises.push(getUserInfo());
+  promises.push(getUserInfo());
+  promises.push(getUserInfo());
+  promises.push(getUserInfo());
+  return Promise.all(promises);
+};
+
 export default props => {
   const version = React.version;
   // const initialData = getInfo() || {};
