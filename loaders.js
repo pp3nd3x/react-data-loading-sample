@@ -8,7 +8,7 @@ const getUserInfo = () => {
       website: 'myawesome.website.com'
     };
     console.log('promise started');
-    setTimeout(resolve, 15000, data);
+    setTimeout(resolve, 10000, data);
   });
   getData.then(x => {
     console.log('userInfo resolved', x);
@@ -42,27 +42,40 @@ class DataLoader {
     // this._onInit.call();
     console.log('Promise', this.promise);
     this._pro = new Promise(resolve => {
-      this._promise
-        .call()
-        .then(result => {
-          if (this._status !== 'cancelled') {
-            console.log('Promise then', result);
-            this._status = 'fulfilled';
-            this._data = result;
-            this._onSuccess.call(null, result);
-            resolve(this);
-          }
-        })
-        .catch(error => {
-          if (this._status !== 'cancelled') {
-            console.log('Promise catch');
-            this._status = 'rejected';
-            this._error = error;
-            this._onFail.call();
-          }
-        });
+      if (this._data) {
+        this._onSuccess.call(null, this._data);
+        resolve(this);
+      } else {
+        this._promise
+          .call()
+          .then(result => {
+            if (this._status !== 'cancelled') {
+              console.log('Promise then', result);
+              this._status = 'fulfilled';
+              this._data = result;
+              this._onSuccess.call(null, result);
+              resolve(this);
+            }
+          })
+          .catch(error => {
+            if (this._status !== 'cancelled') {
+              console.log('Promise catch');
+              this._status = 'rejected';
+              this._error = error;
+              this._onFail.call();
+            }
+          });
+      }
     });
     return this._pro;
+  }
+
+  getData() {
+    if (!this._data) {
+      this.init().then(d => d);
+    }
+
+    return this._data;
   }
 
   getStatus() {
@@ -83,7 +96,7 @@ class DataLoader {
   }
 }
 
-const myDataLoader = new DataLoader(promises['userInfo']);
+const myDataLoader = new DataLoader(promises['userInfo'], 'one', 'two');
 myDataLoader.setOnSuccess(d => console.log('YEAHHH!!', d));
 
 // const loaders = {
