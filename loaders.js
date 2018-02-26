@@ -2,10 +2,17 @@
 
 const getUserInfo = () => {
   const getData = new Promise(resolve => {
+    const data = {
+      name: 'jose',
+      email: 'jose@ms.com',
+      website: 'myawesome.website.com'
+    };
     console.log('promise started');
-    setTimeout(resolve, 15000);
+    setTimeout(resolve, 15000, data);
   });
-  getData.then(x => console.log('userInfo resolved'));
+  getData.then(x => {
+    console.log('userInfo resolved', x);
+  });
   return getData;
 };
 
@@ -24,13 +31,6 @@ class DataLoader {
     this._onInit = null;
     this._onSuccess = null;
     this._onFail = null;
-    // this.init = this.init.bind(this);
-    // this.accept = this.accept.bind(this);
-    // this.init = this.init.bind(this);
-    // this.getStatus = this.getStatus.bind(this);
-    // this.setOnSuccess = this.setOnSuccess.bind(this);
-    // this.setOnFail = this.setOnFail.bind(this);
-    // this.cancel = this.cancel.bind(this);
   }
 
   accept(visitor) {
@@ -46,10 +46,10 @@ class DataLoader {
         .call()
         .then(result => {
           if (this._status !== 'cancelled') {
-            console.log('Promise then');
+            console.log('Promise then', result);
             this._status = 'fulfilled';
             this._data = result;
-            this._onSuccess.call();
+            this._onSuccess.call(null, result);
             resolve(this);
           }
         })
@@ -84,7 +84,7 @@ class DataLoader {
 }
 
 const myDataLoader = new DataLoader(promises['userInfo']);
-myDataLoader.setOnSuccess(() => console.log('YEAHHH!!'));
+myDataLoader.setOnSuccess(d => console.log('YEAHHH!!', d));
 
 // const loaders = {
 //   client1: new DataLoader(promises['userInfo']),

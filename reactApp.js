@@ -8,11 +8,11 @@ const render = async (req, res, next) => {
 
   // render the page with fetched data
   let appWithData = null;
-  const loaders = routeLoaders(request.url);
-  if (loaders) {
-    const data = await resolveLoaders(loaders);
-    appWithData = renderToString(<App data={data} loaders={loaders} />);
-  }
+  // const loaders = routeLoaders(request.url);
+  // if (loaders) {
+  //   const data = await resolveLoaders(loaders);
+  //   appWithData = renderToString(<App data={data} loaders={loaders} />);
+  // }
 
   return `
     <div id="root">
